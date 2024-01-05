@@ -169,140 +169,86 @@ public class EntrainementPartiel {
         return s;
     }
 
-    static int[] divisePolygone(int[] tab) {
-        int p = perimetre(tab);
-        int taille = tab.length - 1;
-        int moitieP = p / 2;
-        int solution = 0;
-        int[] paire = new int[2];
-        for (int i = 0; i <= taille; i++) {
-            int somme = 0;
-            for (int j = i; j <= j + taille + 1; j++) {
-                if (somme + tab[j % taille] > moitieP) {
-                    if (somme > solution) {
-                        paire[0] = j % taille;
-                        paire[1] = i;
-                        break;
-                    }
-                } else {
-                    somme += tab[j % taille];
-                }
-            }
-        }
-        return paire;
-    }
+    static void divisePolygone(int[] t) {
+        int p = perimetre(t);
+        int nb = t.length / 2;
 
-
-    
-    /*
-     * MARCHE PAS
-     * static int[] divisePolygone2(int[] tab) {
-     * int p = perimetre(tab);
-     * int taille = tab.length;
-     * int moitieP = p / 2;
-     * int meilleurEcart = Integer.MAX_VALUE;
-     * int[] paire = new int[2];
-     * 
-     * for (int i = 0; i < taille; i++) {
-     * int somme = 0;
-     * for (int j = i; j < i + taille; j++) { // Modifier ici pour j < i + taille
-     * somme += tab[j % taille];
-     * if (somme >= moitieP) {
-     * int ecartActuel = Math.abs(moitieP - somme);
-     * if (ecartActuel < meilleurEcart) {
-     * meilleurEcart = ecartActuel;
-     * paire[0] = i;
-     * paire[1] = j % taille;
-     * }
-     * break;
-     * }
-     * }
-     * }
-     * return paire;
-     * }
-     */
-
-     public static String divisePolygoneNino(int [] t) {
-        int m = ((t.length-1)/2);
-        int m1 =0;
-        int s0 =0;
-        int s1 =0;
-        for (int i = 0; i < t.length; i++) {
-             if(i==t.length-1 || i<m) {
-                s0+=t[i];
-            }
-            else if(i>=m) {
-                m1=m;
-                s1+=t[i];
-            }
-        }
-        m=t.length-1;
-        return "(" + m1 + " : " + m + ")" + "avec comme valeur " + s1 + " : " + s0;
-    }
-
-    public static int[] trouverPaireDeSommets(int[] t) {
-        int demiPerimetre = perimetre(t) / 2;
-        int longueurCourante = 0;
-        int meilleurEcart = Integer.MAX_VALUE;
-        int[] paire = new int[2];
-
-        for (int i = 0, j = 0; i < t.length; i++) {
-            longueurCourante += t[i];
-
-            // Ajustez le point de départ j pour minimiser la différence
-            while (longueurCourante - t[j] >= demiPerimetre) {
-                longueurCourante -= t[j++];
-            }
-
-            int ecartActuel = Math.abs(demiPerimetre - longueurCourante);
-            if (ecartActuel < meilleurEcart) {
-                meilleurEcart = ecartActuel;
-                paire[0] = j;
-                paire[1] = i + 1; // i+1 car le sommet suivant est le point de division
-            }
-        }
-
-        return paire;
-    }
-
-    public static void divisePolygoneKhera(int[] t){
-        int perimetre = perimetre(t);
-        int nb = t.length/2;
         int s1 = 0;
         int s2 = 0;
-        int poly1 = perimetre;
+        int poly1 = 0;
+        int poly2 = 0;
+
+        int poly1bis = 0;
+        int poly2bis = 0;
+
+        int min = p;
+
+        for (int i = 0; i < t.length; i++) {
+            poly1bis += t[i];
+            int j = i;
+            int count = nb - 1;
+            while (count-- > 0) {
+                j = (j + 1 == t.length) ? 0 : j + 1;
+                poly1bis += t[j];
+            }
+
+            poly2bis = p - poly1bis;
+            int minTemp = Math.abs(poly1bis - poly2bis);
+            if (minTemp < min) {
+                min = minTemp;
+                s1 = i;
+                s2 = ++j;
+                poly1 = poly1bis;
+                poly2 = poly2bis;
+            }
+
+            poly1bis = 0;
+            poly2bis = 0;
+
+        }
+
+        System.out.println(s1 + " " + s2 + " " + poly1 + " " + poly2 + " ");
+    }
+
+    public static void divisePolygoneKhera(int[] t) {
+        int perimetre = perimetre(t);
+        int nb = t.length / 2;
+        int s1 = 0;
+        int s2 = 0;
+        int poly1 = 0;
         int poly2 = 0;
         int poly1Bis = 0;
         int poly2Bis = 0;
         int min = perimetre;
         int minBis = 0;
 
-        for(int i=0; i<t.length; i++){
-            poly1Bis+=t[i];
+        for (int i = 0; i < t.length; i++) {
+            poly1Bis += t[i];
             int j = i;
-            int count = nb-1;
+            int count = nb - 1;
 
-            while(count-->0){
-                j=(j+1==t.length)?0:j+1;
-                poly1Bis+=t[j];
+            while (count-- > 0) {
+                j = (j + 1 == t.length) ? 0 : j + 1;
+                poly1Bis += t[j];
             }
 
-            poly2Bis = perimetre-poly1Bis;
-            minBis = Math.abs(poly1Bis-poly2Bis);
-            if(minBis<min){
-                min=minBis;
-                s1=i;
-                s2=++j;
-                poly1=poly1Bis;
-                poly2=poly2Bis;
+            poly2Bis = perimetre - poly1Bis;
+            minBis = Math.abs(poly1Bis - poly2Bis);
+            if (minBis < min) {
+                min = minBis;
+                s1 = i;
+                s2 = ++j;
+                poly1 = poly1Bis;
+                poly2 = poly2Bis;
             }
 
-            poly1Bis=0;
-            poly2Bis=0;
+            poly1Bis = 0;
+            poly2Bis = 0;
 
         }
 
-        System.out.println("La paire de sommet est ("+s1+","+s2+") avec pour longueurs "+poly1+" et "+poly2+".");
+        System.out.println(
+                "La paire de sommet est (" + s1 + "," + s2 + ") avec pour longueurs " + poly1 + " et " + poly2 + ".");
     }
 
     public static void main(String[] args) {
@@ -311,9 +257,9 @@ public class EntrainementPartiel {
         // afficheTriplets(20);
         // afficheTableau(afficheCarreMagique(5));
         // afficherTableauSimple(ordonne3Parties(tableau));
-        int[] polygone = { 8, 1, 3, 3, 5 };
+        int[] polygone = { 5, 8, 1, 3, 3 };
 
-        afficherTableauSimple(divisePolygone(polygone));
+        divisePolygone(polygone);
 
         divisePolygoneKhera(polygone);
         // afficherTableauSimple(trouverPaireDeSommets(polygone));
