@@ -1,8 +1,10 @@
 package Partiel;
 
 public class EntrainementPartiel {
+
+    // Version moi
     static void exo1() {
-        int[] monTableau = {1, 2, 3, 4, 5}; // Exemple de tableau d'entiers
+        int[] monTableau = { 1, 2, 3, 4, 5 }; // Exemple de tableau d'entiers
         int valeurAChercher = 1; // Exemple de valeur à chercher dans le tableau
 
         int resultat = chercheDansTableauTrie2(monTableau, valeurAChercher);
@@ -19,8 +21,10 @@ public class EntrainementPartiel {
         return -1;
     }
 
+    // Version ChatGPT
     /**
-     * Recherche un élément dans un tableau trié en utilisant l'algorithme de recherche binaire.
+     * Recherche un élément dans un tableau trié en utilisant l'algorithme de
+     * recherche binaire.
      *
      * @param t le tableau trié dans lequel effectuer la recherche.
      * @param x l'élément à rechercher.
@@ -65,6 +69,7 @@ public class EntrainementPartiel {
         }
     }
 
+    // Version moi
     static int[][] afficheCarreMagique(int n) {
         int[][] tab = new int[n][n];
         int c = n / 2;
@@ -83,6 +88,7 @@ public class EntrainementPartiel {
         return tab;
     }
 
+    // Version ChatGpt
     static int[][] afficheCarreMagiqueGPT(int n) {
         // Vérifiez que n est impair
         if (n % 2 == 0) {
@@ -102,7 +108,8 @@ public class EntrainementPartiel {
             i = (i + 1) % n; // Descend d'une ligne (avec comportement circulaire)
             j = (j + 1) % n; // Déplace d'une colonne vers la droite (avec comportement circulaire)
 
-            // Si la cellule est déjà remplie, déplacez-vous une ligne en dessous de la dernière cellule remplie
+            // Si la cellule est déjà remplie, déplacez-vous une ligne en dessous de la
+            // dernière cellule remplie
             if (tab[i][j] != 0) {
                 i = (dernierI + 2) % n; // Assurez-vous de rester dans le tableau
                 j = dernierJ; // Restez dans la même colonne
@@ -175,8 +182,8 @@ public class EntrainementPartiel {
                     if (somme > solution) {
                         paire[0] = j % taille;
                         paire[1] = i;
+                        break;
                     }
-                    break;
                 } else {
                     somme += tab[j % taille];
                 }
@@ -185,31 +192,53 @@ public class EntrainementPartiel {
         return paire;
     }
 
-    static int[] divisePolygone2(int[] tab) {
-        int p = perimetre(tab);
-        int taille = tab.length;
-        int moitieP = p / 2;
-        int meilleurEcart = Integer.MAX_VALUE;
-        int[] paire = new int[2];
 
-        for (int i = 0; i < taille; i++) {
-            int somme = 0;
-            for (int j = i; j < i + taille; j++) { // Modifier ici pour j < i + taille
-                somme += tab[j % taille];
-                if (somme >= moitieP) {
-                    int ecartActuel = Math.abs(moitieP - somme);
-                    if (ecartActuel < meilleurEcart) {
-                        meilleurEcart = ecartActuel;
-                        paire[0] = i;
-                        paire[1] = j % taille;
-                    }
-                    break;
-                }
+    
+    /*
+     * MARCHE PAS
+     * static int[] divisePolygone2(int[] tab) {
+     * int p = perimetre(tab);
+     * int taille = tab.length;
+     * int moitieP = p / 2;
+     * int meilleurEcart = Integer.MAX_VALUE;
+     * int[] paire = new int[2];
+     * 
+     * for (int i = 0; i < taille; i++) {
+     * int somme = 0;
+     * for (int j = i; j < i + taille; j++) { // Modifier ici pour j < i + taille
+     * somme += tab[j % taille];
+     * if (somme >= moitieP) {
+     * int ecartActuel = Math.abs(moitieP - somme);
+     * if (ecartActuel < meilleurEcart) {
+     * meilleurEcart = ecartActuel;
+     * paire[0] = i;
+     * paire[1] = j % taille;
+     * }
+     * break;
+     * }
+     * }
+     * }
+     * return paire;
+     * }
+     */
+
+     public static String divisePolygoneNino(int [] t) {
+        int m = ((t.length-1)/2);
+        int m1 =0;
+        int s0 =0;
+        int s1 =0;
+        for (int i = 0; i < t.length; i++) {
+             if(i==t.length-1 || i<m) {
+                s0+=t[i];
+            }
+            else if(i>=m) {
+                m1=m;
+                s1+=t[i];
             }
         }
-        return paire;
+        m=t.length-1;
+        return "(" + m1 + " : " + m + ")" + "avec comme valeur " + s1 + " : " + s0;
     }
-
 
     public static int[] trouverPaireDeSommets(int[] t) {
         int demiPerimetre = perimetre(t) / 2;
@@ -236,16 +265,57 @@ public class EntrainementPartiel {
         return paire;
     }
 
+    public static void divisePolygoneKhera(int[] t){
+        int perimetre = perimetre(t);
+        int nb = t.length/2;
+        int s1 = 0;
+        int s2 = 0;
+        int poly1 = perimetre;
+        int poly2 = 0;
+        int poly1Bis = 0;
+        int poly2Bis = 0;
+        int min = perimetre;
+        int minBis = 0;
+
+        for(int i=0; i<t.length; i++){
+            poly1Bis+=t[i];
+            int j = i;
+            int count = nb-1;
+
+            while(count-->0){
+                j=(j+1==t.length)?0:j+1;
+                poly1Bis+=t[j];
+            }
+
+            poly2Bis = perimetre-poly1Bis;
+            minBis = Math.abs(poly1Bis-poly2Bis);
+            if(minBis<min){
+                min=minBis;
+                s1=i;
+                s2=++j;
+                poly1=poly1Bis;
+                poly2=poly2Bis;
+            }
+
+            poly1Bis=0;
+            poly2Bis=0;
+
+        }
+
+        System.out.println("La paire de sommet est ("+s1+","+s2+") avec pour longueurs "+poly1+" et "+poly2+".");
+    }
 
     public static void main(String[] args) {
-        int[] tableau = {8, -10, 9, 6, -7, 0, 3, 7, -6, 0};
-        //exo1();
-        //afficheTriplets(20);
-        //afficheTableau(afficheCarreMagique(5));
+        int[] tableau = { 8, -10, 9, 6, -7, 0, 3, 7, -6, 0 };
+        // exo1();
+        // afficheTriplets(20);
+        // afficheTableau(afficheCarreMagique(5));
         // afficherTableauSimple(ordonne3Parties(tableau));
-        int[] polygone = {3, 5, 8, 1, 3};
+        int[] polygone = { 8, 1, 3, 3, 5 };
 
         afficherTableauSimple(divisePolygone(polygone));
+
+        divisePolygoneKhera(polygone);
         // afficherTableauSimple(trouverPaireDeSommets(polygone));
     }
 
