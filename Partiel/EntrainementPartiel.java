@@ -253,15 +253,15 @@ public class EntrainementPartiel {
 
     public static void main(String[] args) {
         int[] tableau = { 8, -10, 9, 6, -7, 0, 3, 7, -6, 0 };
-        // exo1();
+        exo1();
         // afficheTriplets(20);
-        // afficheTableau(afficheCarreMagique(5));
+        afficheTableau(afficheCarreMagique(3));
         // afficherTableauSimple(ordonne3Parties(tableau));
         int[] polygone = { 5, 8, 1, 3, 3 };
 
-        divisePolygone(polygone);
+        // divisePolygone(polygone);
 
-        divisePolygoneKhera(polygone);
+        // divisePolygoneKhera(polygone);
         // afficherTableauSimple(trouverPaireDeSommets(polygone));
     }
 
